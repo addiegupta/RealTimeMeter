@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-1928" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
+  </component>
+  <component name="SbtLocalSettings">
+    <option name="projectSyncType">
+      <map>
+        <entry key="$PROJECT_DIR$/../akka-in-action/chapter-fault-tolerance" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../akka-in-action/chapter-futures" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../akka-in-action/chapter-persistence" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../akka-in-action/chapter-stream" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../akka-in-action/chapter-testdriven" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../akka-in-action/chapter-up-and-running" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../akka_streams_tutorial" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../akka-in-action/chapter-remoting" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../akka-in-action/chapter-up-and-running" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../akka-in-action/chapter-up-and-running-og" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../akka-samples/akka-sample-cluster-scala" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../akka-samples/akka-sample-distributed-data-scala" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../akka-samples/akka-sample-main-scala" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../akka-samples/akka-sample-multi-node-scala" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../akka-samples/akka-sample-sharding-scala" value="PREVIEW" />
+      </map>
+    </option>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
