@@ -25,6 +25,13 @@ libraryDependencies ++= {
         "com.typesafe.akka"       %% "akka-http-spray-json"            % akkaHttpVersion,
         "com.typesafe.akka"       %%  "akka-testkit"                   % akkaVersion   % "test",
         "org.scalatest"           %% "scalatest"                       % "3.0.0"       % "test",
-        "com.github.nscala-time"  %% "nscala-time"                     % "2.22.0"
+        "com.github.nscala-time"  %% "nscala-time"                     % "2.22.0",
+        "com.typesafe.akka"       %% "akka-testkit"                    % akkaVersion,
+        "com.typesafe.slick"      %% "slick-hikaricp"                  % "3.3.0",
+        "com.lightbend.akka"      %% "akka-stream-alpakka-slick"       % "1.0.2",
+        "org.slf4j"               % "slf4j-nop"                        % "1.6.4",
+        "com.h2database"          % "h2"                               % "1.4.187",
+        "postgresql"              % "postgresql"                       % "9.1-901-1.jdbc4",
+        "org.scalatest"           %% "scalatest"                       % "3.0.5"        % "test"
     )
 }
