@@ -3,7 +3,7 @@ package com.server.provision
 
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import akka.stream.ActorMaterializer
-import com.server.provision.PlanDbActor.UpdateBalanceById
+import com.server.provision.PlanDbActor.{FindPlanById, UpdateBalanceById}
 import com.server.provision.MeteringActor.EndCallMeter
 
 import scala.concurrent.Future
@@ -40,7 +40,7 @@ class MediatorActor(implicit materializer: ActorMaterializer, system: ActorSyste
   override def receive: Receive = {
     case InitiateMeter(id)=>
           println("INitiating meter inside mediator")
-//      planDataActor ! FindPlanById(id)
+      planDataActor ! FindPlanById(id)
     case EndCallMediator=>
       balanceMeterActor ! EndCallMeter
     case UpdateBalance(id,balance)=>

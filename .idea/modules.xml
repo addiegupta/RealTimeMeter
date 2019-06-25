@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/RealTimeMeter.iml" filepath="$PROJECT_DIR$/.idea/modules/RealTimeMeter.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/WebServiceForCallandStop-build.iml" filepath="$PROJECT_DIR$/.idea/modules/WebServiceForCallandStop-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/RealTimeMeter.iml" filepath="$PROJECT_DIR$/.idea/RealTimeMeter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/RealTimeMeter-build.iml" filepath="$PROJECT_DIR$/.idea/modules/RealTimeMeter-build.iml" />
     </modules>
   </component>
 </project>
