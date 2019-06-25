@@ -1,12 +1,13 @@
 
 package com.server.provision
 
-import akka.actor.{Actor,ActorSystem, Props}
+import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
 import akka.stream.ActorMaterializer
 import akka.stream.alpakka.slick.javadsl.SlickSession
 import com.server.provision.MediatorActor._
 import slick.basic.DatabaseConfig
 import slick.jdbc.JdbcProfile
+
 import scala.concurrent.Future
 
 object PlanDbActor{
@@ -20,7 +21,8 @@ object PlanDbActor{
 
 }
 
-class PlanDbActor(implicit materializer: ActorMaterializer, system : ActorSystem) extends Actor{
+class PlanDbActor(implicit materializer: ActorMaterializer, system : ActorSystem) extends Actor
+    with ActorLogging {
 
 
     import com.server.provision.PlanDbActor._
@@ -43,7 +45,7 @@ class PlanDbActor(implicit materializer: ActorMaterializer, system : ActorSystem
     override def receive: Receive = {
 
         case FindPlanById(id:Int)=>
-            println("called FindPlanById")
+            log.info(s"called FindPlanById for id: $id")
 
             val action = plans.filter(_.id === id).map(u => (u.data_balance)).result.map(_.headOption.map {
                 case (data_balance) => data_balance
@@ -57,7 +59,7 @@ class PlanDbActor(implicit materializer: ActorMaterializer, system : ActorSystem
         //        }
 
         case UpdateBalanceById(id:Int,balance:Int)=>
-            println("called UpdateBalanceById")
+            log.info(s"UpdateBalanceById called for id: $id and balance: $balance")
             val query = for { p <- plans if p.id === id } yield p.data_balance
             val updateAction = query.update(balance)
 

@@ -1,7 +1,7 @@
 
 package com.server.provision
 
-import akka.actor.{Actor, ActorRef, ActorSystem, Props}
+import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
 import akka.stream.ActorMaterializer
 import com.server.provision.PlanDbActor.{FindPlanById, UpdateBalanceById}
 import com.server.provision.MeteringActor.EndCallMeter
@@ -18,7 +18,8 @@ object MediatorActor{
   case class ReplyToMeter(f:Future[Option[Int]],id:Int)
 
 }
-class MediatorActor(implicit materializer: ActorMaterializer, system: ActorSystem) extends Actor {
+class MediatorActor(implicit materializer: ActorMaterializer, system: ActorSystem) extends Actor
+with ActorLogging{
   import MediatorActor._
 
   implicit val ec = system.dispatcher
@@ -26,11 +27,11 @@ class MediatorActor(implicit materializer: ActorMaterializer, system: ActorSyste
   var balanceMeterActor:ActorRef=null
 
   override def preStart(): Unit = {
-    println("MediatorActor started")
+    log.info("New MediatorActor started")
 
   }
   override def postStop(): Unit = {
-    println("MediatorActor stopped")
+    log.info("MediatorActor stopped")
   }
 
   def show(x: Option[Int]):Int = x match {
@@ -39,7 +40,7 @@ class MediatorActor(implicit materializer: ActorMaterializer, system: ActorSyste
   }
   override def receive: Receive = {
     case InitiateMeter(id)=>
-          println("INitiating meter inside mediator")
+      log.info(s"Initiating meter for id: $id inside mediator")
       planDataActor ! FindPlanById(id)
     case EndCallMediator=>
       balanceMeterActor ! EndCallMeter
@@ -48,7 +49,7 @@ class MediatorActor(implicit materializer: ActorMaterializer, system: ActorSyste
       planDataActor ! UpdateBalanceById(id,balance)
       context stop self
     case ReplyToMeter(f,id)=>
-      println("called ReplyToMeter")
+      log.info(s"ReplyToMeter called for id: $id ")
 
       f.map {
         case x:Some[Int] =>
@@ -57,7 +58,7 @@ class MediatorActor(implicit materializer: ActorMaterializer, system: ActorSyste
           balanceMeterActor = context.actorOf(MeteringActor.props(id,balance), name = s"balanceMeterActor-$id")
         //          balanceMeterActor ! DecreaseBalance
 
-        case None => println("Record Not Found")//Success with None
+        case None =>log.info(s"Record Not Found for $id")//Success with None
 
       }
 

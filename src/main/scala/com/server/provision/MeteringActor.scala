@@ -1,7 +1,7 @@
 package com.server.provision
 
 
-import akka.actor.{Actor, ActorRef, ActorSystem, Cancellable, Props}
+import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Cancellable, Props}
 import akka.stream.ActorMaterializer
 import com.server.provision.MediatorActor.UpdateBalance
 import com.server.provision.MeteringActor.EndCallMeter
@@ -16,17 +16,17 @@ object MeteringActor
 
 }
 
-class MeteringActor(id: Int, var balance:Int) (implicit materializer: ActorMaterializer, system: ActorSystem) extends Actor{
+class MeteringActor(id: Int, var balance:Int) (implicit materializer: ActorMaterializer, system: ActorSystem) extends Actor
+with ActorLogging{
     var cancellable:Cancellable = null
     implicit val ec = system.dispatcher
     override def preStart(): Unit = {
-        println("Balance meter started with balance")
-        println(balance," id:",id)
+        log.info(s"Balance meter for id:$id started with balance: $balance")
 
         cancellable = context.system.scheduler.schedule(0 seconds, 1 seconds) {
 
             balance-=1
-            println("tick:"+balance)
+            log.info(s"ID: $id ; Balance: $balance")
             //      if(balance==1375){
             //        cancellable.cancel()
             //        context.parent!UpdateBalance(id,balance)
@@ -41,7 +41,7 @@ class MeteringActor(id: Int, var balance:Int) (implicit materializer: ActorMater
     }
     override def receive: Receive = {
         case EndCallMeter=>
-            println("Call Ended")
+            log.info(s"Call Ended for id: $id")
             cancellable.cancel()
             sender()!UpdateBalance(id,balance)
             context stop self
@@ -53,7 +53,7 @@ class MeteringActor(id: Int, var balance:Int) (implicit materializer: ActorMater
 
     }
     override def postStop(): Unit = {
-        println("Balance meter stopped")
+        log.info(s"Balance meter for id: $id stopped")
 
     }
 }
