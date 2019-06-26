@@ -21,7 +21,7 @@ with ActorLogging{
     var cancellable:Cancellable = null
     implicit val ec = system.dispatcher
     override def preStart(): Unit = {
-        log.info(s"Balance meter for id:$id started with balance: $balance")
+        log.info(s"Started Balance meter for id:$id with balance: $balance")
 
         cancellable = context.system.scheduler.schedule(0 seconds, 1 seconds) {
 
@@ -36,8 +36,6 @@ with ActorLogging{
         }
         //This cancels further Ticks to be sent
 
-
-
     }
     override def receive: Receive = {
         case EndCallMeter=>
@@ -47,13 +45,10 @@ with ActorLogging{
             context stop self
         //      val planDataActor: ActorRef = context.actorOf(PlanDataActor.props, "planDataActor")
         //
-        //
-        //
         //      planDataActor ! UpdateBalanceById(id,balance-10)
 
     }
     override def postStop(): Unit = {
-        log.info(s"Balance meter for id: $id stopped")
-
+        log.info(s"Stopped Balance meter for id: $id")
     }
 }

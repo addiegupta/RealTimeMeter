@@ -27,11 +27,11 @@ with ActorLogging{
   var balanceMeterActor:ActorRef=null
 
   override def preStart(): Unit = {
-    log.info("New MediatorActor started")
+    log.info("Started new MediatorActor")
 
   }
   override def postStop(): Unit = {
-    log.info("MediatorActor stopped")
+    log.info("Stopped MediatorActor")
   }
 
   def show(x: Option[Int]):Int = x match {

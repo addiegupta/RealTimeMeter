@@ -45,7 +45,7 @@ class PlanDbActor(implicit materializer: ActorMaterializer, system : ActorSystem
     override def receive: Receive = {
 
         case FindPlanById(id:Int)=>
-            log.info(s"called FindPlanById for id: $id")
+            log.info(s"FindPlanById called for id: $id")
 
             val action = plans.filter(_.id === id).map(u => (u.data_balance)).result.map(_.headOption.map {
                 case (data_balance) => data_balance

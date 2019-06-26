@@ -3,6 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="cdaa0ca2-2921-48a6-9bc0-b45ac54df41e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/com/server/provision/MediatorActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/com/server/provision/MediatorActor.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/com/server/provision/MeteringActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/com/server/provision/MeteringActor.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/com/server/provision/PlanDbActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/com/server/provision/PlanDbActor.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/com/server/provision/WebServer.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/com/server/provision/WebServer.scala" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -54,8 +57,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/com/server/provision/MediatorActor.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
-              <caret line="8" column="20" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
+            <state relative-caret-position="-258">
+              <caret line="34" column="3" lean-forward="true" selection-start-line="34" selection-start-column="3" selection-end-line="34" selection-end-column="3" />
+              <folding>
+                <element signature="e#31#100#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -63,8 +69,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala/com/server/provision/WebServer.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="53" column="47" selection-start-line="53" selection-start-column="47" selection-end-line="53" selection-end-column="47" />
+            <state relative-caret-position="486">
+              <caret line="45" column="19" selection-start-line="45" selection-start-column="19" selection-end-line="45" selection-end-column="19" />
               <folding>
                 <element signature="e#30#66#0" expanded="true" />
               </folding>
@@ -75,11 +81,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/com/server/provision/PlanDbActor.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1403">
-              <caret line="67" column="5" selection-start-line="67" selection-start-column="5" selection-end-line="67" selection-end-column="5" />
-              <folding>
-                <element signature="e#31#75#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="1224">
+              <caret line="58" column="19" lean-forward="true" selection-start-line="58" selection-start-column="19" selection-end-line="58" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/com/server/provision/MeteringActor.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="432">
+              <caret line="23" column="52" selection-start-line="23" selection-start-column="52" selection-end-line="23" selection-end-column="52" />
             </state>
           </provider>
         </entry>
@@ -96,6 +108,11 @@
       </file>
     </leaf>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>println</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -108,11 +125,11 @@
         <option value="$PROJECT_DIR$/src/main/scala/com/provision/server/WebServer.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/com/provision/server/DbActor.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/com/server/provision/DbActor.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/com/server/provision/MeteringActor.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/com/server/provision/PlanDbActor.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/com/server/provision/MediatorActor.scala" />
         <option value="$PROJECT_DIR$/.idea/scala_compiler.xml" />
         <option value="$PROJECT_DIR$/build.sbt" />
+        <option value="$PROJECT_DIR$/src/main/scala/com/server/provision/PlanDbActor.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/com/server/provision/MeteringActor.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/com/server/provision/MediatorActor.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/com/server/provision/WebServer.scala" />
       </list>
     </option>
@@ -124,7 +141,7 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-1928" />
+    <option name="x" value="1912" />
     <option name="y" value="-8" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
@@ -368,7 +385,21 @@
       <option name="project" value="LOCAL" />
       <updated>1561442755216</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Implement actor selection for finding mediator actor&#10;Remove redundant code in WebServer">
+      <created>1561445241737</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1561445241737</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Replace println with log.info&#10;Make logs more descriptive">
+      <created>1561445963017</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1561445963017</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TodoView">
@@ -381,17 +412,17 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1928" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20735608" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20735608" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
       <window_info id="Favorites" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32910052" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.2825397" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.2825397" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -415,23 +446,15 @@
     <MESSAGE value="Init commit" />
     <MESSAGE value="Finish integration with database logic" />
     <MESSAGE value="Make changes to project names" />
-    <option name="LAST_COMMIT_MESSAGE" value="Make changes to project names" />
+    <MESSAGE value="Implement actor selection for finding mediator actor&#10;Remove redundant code in WebServer" />
+    <MESSAGE value="Replace println with log.info&#10;Make logs more descriptive" />
+    <option name="LAST_COMMIT_MESSAGE" value="Replace println with log.info&#10;Make logs more descriptive" />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/scala/com/server/provision/MeteringActor.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="18" column="6" selection-start-line="18" selection-start-column="6" selection-end-line="18" selection-end-column="6" />
-          <folding>
-            <element signature="e#31#99#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.idea/.name" />
     <entry file="file://$PROJECT_DIR$/.idea/scala_compiler.xml" />
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
@@ -449,16 +472,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/com/server/provision/PlanDbActor.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1403">
-          <caret line="67" column="5" selection-start-line="67" selection-start-column="5" selection-end-line="67" selection-end-column="5" />
-          <folding>
-            <element signature="e#31#75#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -467,15 +480,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/com/server/provision/MediatorActor.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="8" column="20" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
+        <state relative-caret-position="-258">
+          <caret line="34" column="3" lean-forward="true" selection-start-line="34" selection-start-column="3" selection-end-line="34" selection-end-column="3" />
+          <folding>
+            <element signature="e#31#100#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/com/server/provision/MeteringActor.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="23" column="52" selection-start-line="23" selection-start-column="52" selection-end-line="23" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/com/server/provision/PlanDbActor.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1224">
+          <caret line="58" column="19" lean-forward="true" selection-start-line="58" selection-start-column="19" selection-end-line="58" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/com/server/provision/WebServer.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="53" column="47" selection-start-line="53" selection-start-column="47" selection-end-line="53" selection-end-column="47" />
+        <state relative-caret-position="486">
+          <caret line="45" column="19" selection-start-line="45" selection-start-column="19" selection-end-line="45" selection-end-column="19" />
           <folding>
             <element signature="e#30#66#0" expanded="true" />
           </folding>

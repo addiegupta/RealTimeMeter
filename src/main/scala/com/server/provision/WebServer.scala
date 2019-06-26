@@ -38,7 +38,7 @@ object WebServer {
           implicit val timeout = Timeout(FiniteDuration(1, TimeUnit.SECONDS))
           val mediatorActor = system.actorSelection("user/" + s"mediator-$id").resolveOne().onComplete {
             case Success(actorRef) => // logic with the actorRef
-              log.info(s"Stopping call for $id")
+              log.info(s"Stopping call for id: $id")
               actorRef ! EndCallMediator
             case Failure(ex) =>
               log.warning(s"mediatorActor $id does not exist $ex")
@@ -71,6 +71,5 @@ object WebServer {
       Await.result(system.whenTerminated, 30.seconds)
       log.info("Terminated... Bye")
     }
-
   }
 }
