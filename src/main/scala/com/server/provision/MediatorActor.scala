@@ -55,10 +55,17 @@ with ActorLogging{
         case x:Some[Int] =>
 
           val balance:Int=show(x)
-          balanceMeterActor = context.actorOf(MeteringActor.props(id,balance), name = s"balanceMeterActor-$id")
+          if(balance==0)
+          {
+            log.info(s"Balance 0 for id:$id , Call Cannot be established")
+            context stop self
+          }
+          else
+            balanceMeterActor = context.actorOf(MeteringActor.props(id,balance), name = s"balanceMeterActor-$id")
         //          balanceMeterActor ! DecreaseBalance
 
         case None =>log.info(s"Record Not Found for $id")//Success with None
+                    context stop self
 
       }
 

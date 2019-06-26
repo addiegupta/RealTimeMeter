@@ -27,11 +27,11 @@ with ActorLogging{
 
             balance-=1
             log.info(s"ID: $id ; Balance: $balance")
-            //      if(balance==1375){
-            //        cancellable.cancel()
-            //        context.parent!UpdateBalance(id,balance)
-            //        context stop self
-            //      }
+                  if(balance==0){
+                    cancellable.cancel()
+                    context.parent!UpdateBalance(id,balance)
+                    context stop self
+                  }
 
         }
         //This cancels further Ticks to be sent
