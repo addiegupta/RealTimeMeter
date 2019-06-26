@@ -24,6 +24,10 @@ object WebServer {
   def main(args: Array[String]): Unit = {
     val endpoint = "ws://127.0.0.1:8080"
 
+    def stopCall(id: Int) = {
+
+    }
+
     val provisioningRoute =
       get{
         path("start-call"/ IntNumber){ id =>
@@ -33,20 +37,19 @@ object WebServer {
             complete(s" Starting call for id $id")
         } ~
         path("stop-call" / IntNumber){ id =>
-
-            //TODO Find way to display error if any
+          val start = System.currentTimeMillis()
           implicit val timeout = Timeout(FiniteDuration(1, TimeUnit.SECONDS))
-          val mediatorActor = system.actorSelection("user/" + s"mediator-$id").resolveOne().onComplete {
+          onComplete(system.actorSelection("user/" + s"mediator-$id").resolveOne()){
             case Success(actorRef) => // logic with the actorRef
               log.info(s"Stopping call for id: $id")
               actorRef ! EndCallMediator
+              complete(s"Call stopped for id: $id in ${(System.currentTimeMillis()-start)/1000} seconds")
             case Failure(ex) =>
               log.warning(s"mediatorActor $id does not exist $ex")
+              complete(s"Unable to stop call for id: $id \nError: $ex")
           }
-            complete(s"Stopping call for id $id")
         }
       }
-
 
     val httpInterface = "127.0.0.1"
     val httpPort = 8080
