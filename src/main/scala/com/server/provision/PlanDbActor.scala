@@ -1,6 +1,7 @@
 
 package com.server.provision
 
+import akka.pattern.pipe
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
 import akka.stream.ActorMaterializer
 import akka.stream.alpakka.slick.javadsl.SlickSession
@@ -51,7 +52,11 @@ class PlanDbActor(implicit materializer: ActorMaterializer, system : ActorSystem
                 case (data_balance) => data_balance
             })
             val f: Future[Option[Int]] = sess.db.run(action)
+
+//            f.pipeTo(sender())
+
             sender()! ReplyToMeter(f,id)
+
         //        f.onComplete {
         //          case s => println(s"Result: $s")
         //                  sender()! ReplyToMeter
