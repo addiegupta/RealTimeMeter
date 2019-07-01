@@ -7,6 +7,7 @@ import com.server.provision.PlanDbActor.{FindPlanById, UpdateBalanceById}
 import com.server.provision.MeteringActor.EndCallMeter
 
 import scala.concurrent.Future
+import scala.util.{Failure, Success}
 
 object MediatorActor{
   def props(planDbActor: ActorRef)(implicit materializer: ActorMaterializer,system : ActorSystem) =
@@ -35,13 +36,14 @@ with ActorLogging{
 
   def show(x: Option[Int]):Int = x match {
     case Some(s) => s
-    case None => 0
+    case None => -1
   }
   override def receive: Receive = {
     case InitiateMeter(id)=>
       log.info(s"Initiating meter for id: $id inside mediator")
       planDbActor ! FindPlanById(id)
     case EndCallMediator=>
+      log.info("Mediator to BalanceMeterActor")
       balanceMeterActor ! EndCallMeter
     case UpdateBalance(id,balance)=>
       //      balanceMeterActor!PoisonPill
@@ -50,29 +52,43 @@ with ActorLogging{
     case ReplyToMeter(f,id)=>
       log.info(s"ReplyToMeter called for id: $id ")
 
-      f.map {
-        case x:Some[Int] =>
+//      f.map {
+//        case x:Some[Int] =>
+//
+//          val balance:Int=show(x)
+//          if(balance==0)
+//          {
+//            log.info(s"Balance 0 for id:$id , Call Cannot be established")
+//            context stop self
+//          }
+//          else
+//            balanceMeterActor = context.actorOf(MeteringActor.props(id,balance), name = s"balanceMeterActor-$id")
+//        //          balanceMeterActor ! DecreaseBalance
+//
+//        case None =>log.info(s"Record Not Found for $id")//Success with None
+//                    context stop self
+//
+//      }
 
-          val balance:Int=show(x)
+      f.onComplete{
+        case Success(v)=>
+          val balance:Int=show(v)
           if(balance==0)
           {
             log.info(s"Balance 0 for id:$id , Call Cannot be established")
             context stop self
           }
+          else if(balance<0)
+          {
+            log.info(s"Record Not Found for $id")//Success with None
+            context stop self
+          }
           else
-            balanceMeterActor = context.actorOf(MeteringActor.props(id,balance), name = s"balanceMeterActor-$id")
-        //          balanceMeterActor ! DecreaseBalance
+              balanceMeterActor = context.actorOf(MeteringActor.props(id,balance), name = s"balanceMeterActor-$id")
 
-        case None =>log.info(s"Record Not Found for $id")//Success with None
-                    context stop self
-
+        case Failure(exception)=>println("f:"+exception)
       }
 
-    //      f.onComplete {
-    //                      case s => println(s"Result: $s")
-    //                      val balanceMeterActor = context.actorOf(BalanceMeterActor.props(4,3000), name = "balanceMeterActor")
-    //                      balanceMeterActor ! DecreaseBalance
-    //                    }
 
 
   }
