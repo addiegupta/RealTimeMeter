@@ -15,27 +15,15 @@ object PlanDbActor{
     case class FindPlanById(id:Int)
 
     case class UpdateBalanceById(id:Int,data_balance:Int)
-    //  system.registerOnTermination(sess.close())
 
 }
-
 class PlanDbActor(implicit materializer: ActorMaterializer, system : ActorSystem) extends Actor
     with ActorLogging {
 
-
-    val db = Database.forConfig("sample")
+    val db = Database.forConfig("plansDb")
 
     import com.server.provision.PlanDbActor._
 
-//    val newPostgresDb = Database.forConfig("custom.postgres")
-
-//        val databaseConfig = DatabaseConfig.forConfig[PostgresProfile]("slick-postgres")
-//    val db = Database.forConfig("slick-postgres")
-//    val db = HikariCPJdbcDataSource.forConfig("slick-postgres",)
-
-    //    implicit val sess = SlickSession.forConfig(databaseConfig)
-
-    //    import sess.profile.api._
     implicit val ec = system.dispatcher
     //  val medActor: ActorRef = context.actorOf(Med.props, "medActor")
     class Plans(tag: Tag) extends Table[(Int,String, String, Int)](tag, "plans") {
@@ -51,16 +39,6 @@ class PlanDbActor(implicit materializer: ActorMaterializer, system : ActorSystem
 
         case FindPlanById(id:Int)=>
             log.info(s"FindPlanById called for id: $id")
-/*
-            val action = plans.filter(_.id === id).map(u => (u.data_balance)).result.map(_.headOption.map {
-                case (data_balance) => data_balance
-            })
-//            val f: Future[Option[Int]] = databaseConfig.db.run(action)
-            val f: Future[Option[Int]] = newPostgresDb.run(action)
-//            val f: Future[Option[Int]] = db.run(action)
-
-//            f.pipeTo(sender())
-            */
 
             val action = plans.filter(_.id===id).map(u => (u.data_balance)).result.map(_.headOption.map{
                 case data_balance => data_balance
@@ -68,10 +46,7 @@ class PlanDbActor(implicit materializer: ActorMaterializer, system : ActorSystem
 
             val queryResult = db.run(action)
 
-//            Await.result(queryResult,Duration.apply(5,"s")).foreach(println)
-
             sender()! ReplyToMeter(queryResult,id)
-
 
         //        f.onComplete {
         //          case s => println(s"Result: $s")
@@ -88,6 +63,5 @@ class PlanDbActor(implicit materializer: ActorMaterializer, system : ActorSystem
             //    val sql = query.updateStatement
 
             db.run(updateAction)
-//            sess.db.run(updateAction)
     }
 }
