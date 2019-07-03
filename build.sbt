@@ -17,7 +17,7 @@ libraryDependencies ++= {
     val akkaHttpVersion = "10.0.9"
     Seq(
         "com.typesafe.akka"       %%  "akka-actor"                     % akkaVersion,
-//        "com.typesafe.akka"       %%  "akka-slf4j"                     % akkaVersion,
+        "com.typesafe.akka"       %%  "akka-slf4j"                     % akkaVersion,
         "com.typesafe.akka"       %%  "akka-stream"                    % akkaVersion,
         "com.typesafe.play"       %%  "play"                           % "2.6.21",
         "com.typesafe.akka"       %% "akka-http-core"                  % akkaHttpVersion,
@@ -29,11 +29,12 @@ libraryDependencies ++= {
         "com.typesafe.slick"      %% "slick-hikaricp"                  % "3.3.0",
         "com.typesafe.slick"      %% "slick-codegen"                   % "3.3.0",
         "com.typesafe.slick"      %% "slick"                           % "3.3.0",
-        "org.slf4j"               %  "slf4j-nop"                       % "1.6.4",
+//        "org.slf4j"               %  "slf4j-nop"                       % "1.6.4",
 //        "com.lightbend.akka"      %% "akka-stream-alpakka-slick"       % "1.0.2",
-        "com.h2database"          % "h2"                               % "1.4.187",
-        "postgresql"              % "postgresql"                       % "9.1-901-1.jdbc4",
+//        "com.h2database"          %  "h2"                              % "1.4.187",
+        "postgresql"              %  "postgresql"                      % "9.1-901-1.jdbc4",
         "org.scalatest"           %% "scalatest"                       % "3.0.5"        % "test",
-        "org.postgresql"          %  "postgresql"                      % "9.4.1209"
+        "org.postgresql"          %  "postgresql"                      % "42.2.6",
+        "ch.qos.logback"          %  "logback-classic"                 % "1.2.3"
     )
 }
