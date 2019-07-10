@@ -38,6 +38,9 @@ class MeteringActor(id: Int, var balance:Int) (implicit materializer: ActorMater
 
   }
   override def receive: Receive = {
+    case "fail" =>
+      println("Metering actor fails now")
+      throw new Exception("I failed")
     case EndCallMeter=>
       log.info(s"Call Ended for id: $id")
       cancellable.cancel()
@@ -50,5 +53,6 @@ class MeteringActor(id: Int, var balance:Int) (implicit materializer: ActorMater
   }
   override def postStop(): Unit = {
     log.info(s"Stopped Balance meter for id: $id")
+    cancellable.cancel()
   }
 }

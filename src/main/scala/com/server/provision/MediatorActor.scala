@@ -28,6 +28,23 @@ with ActorLogging{
     var meterActor:ActorRef=null
     var id :Int= 0
 
+  import akka.actor.OneForOneStrategy
+  import akka.actor.SupervisorStrategy._
+  import scala.concurrent.duration._
+
+  override val supervisorStrategy =
+    OneForOneStrategy() {
+      case _: ArithmeticException      => log.info("Resuming Meter Actor")
+                                          Resume
+      case _: NullPointerException     => log.info("Restarting Meter Actor")
+                                          Restart
+      case _: IllegalArgumentException => log.info("Stopping Meter Actor")
+                                          Stop
+      case _: Exception                =>log.info("Resuming Meter Actor")
+                                          Resume
+
+    }
+
   override def preStart(): Unit = {
     log.info("Started new MediatorActor")
 
@@ -112,18 +129,14 @@ with ActorLogging{
             log.info(s"Record Not Found for $id")//Success with None
             context stop self
           }
-          else
-            meterActor = context.actorOf(MeteringActor.props(id,balance), name = s"balanceMeterActor-$id")
-        //          balanceMeterActor ! DecreaseBalance
+          else {
+            meterActor = context.actorOf(MeteringActor.props(id, balance), name = s"balanceMeterActor-$id")
+          }
 
         case Failure(exception)=>println("f:"+exception)
       }
 
-    //      f.onComplete {
-    //                      case s => println(s"Result: $s")
-    //                      val balanceMeterActor = context.actorOf(BalanceMeterActor.props(4,3000), name = "balanceMeterActor")
-    //                      balanceMeterActor ! DecreaseBalance
-    //                    }
+      case "crash-meter"=>meterActor!"fail"
 
 
   }
