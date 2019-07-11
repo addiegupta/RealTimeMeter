@@ -21,6 +21,9 @@ class MeteringActor(id: Int, var balance:Int) (implicit system: ActorSystem) ext
   var cancellable:Cancellable = null
   implicit val ec = system.dispatcher
   override def preStart(): Unit = {
+//    if(balance<100)
+//      log.warning(s"Low Balance for id: #$id# , Please Top Up balance soon")
+
     log.info(s"Started Balance meter for id:#$id# with balance: $balance")
 
     cancellable = context.system.scheduler.schedule(0 seconds, 1 seconds) {
@@ -49,9 +52,6 @@ class MeteringActor(id: Int, var balance:Int) (implicit system: ActorSystem) ext
       cancellable.cancel()
       sender()!UpdateBalance(id,balance)
       context stop self
-    //      val planDataActor: ActorRef = context.actorOf(PlanDataActor.props, "planDataActor")
-    //
-    //      planDataActor ! UpdateBalanceById(id,balance-10)
     case Greetings =>
       log.info("Received greetings from mediator in meter")
   }

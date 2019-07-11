@@ -19,8 +19,9 @@ object WebServer extends SimpleRoutingApp {
   implicit def executor: ExecutionContext = system.dispatcher
   protected val log = Logging(system.eventStream, "RealTimeMeter-log")
 
-  log.info("Starting planDbActor")
-  val dbActorPool = system.actorOf(FromConfig.props(PlanDbActor.props), "random-router-pool-resizer")
+  log.info("Starting Plan Database Router Pooler")
+//  val planDbActor: ActorRef = system.actorOf(PlanDbActor.props, "planDataActor")
+  val dbActorPool=system.actorOf(FromConfig.props(PlanDbActor.props),"random-router-pool-resizer")
 
 
   def main(args: Array[String]): Unit = {
@@ -30,18 +31,17 @@ object WebServer extends SimpleRoutingApp {
         pathSingleSlash {
           complete("RealTime Metering System is up and running!")
         } ~
-          path("start-call") {
-            parameters("id") { id =>
-              try {
-                val mediatorActor = system.actorOf(MediatorActor.props(dbActorPool), s"mediator-$id")
-                log.info(s"Created mediator actor for id #$id# and now initiating meter")
-                mediatorActor ! InitiateMeter(Integer.valueOf(id))
-                complete(s" Starting call for id $id")
-              } catch {
-                case ex: akka.actor.InvalidActorNameException =>
-                  log.info(s"Already in call for id #$id# , Exception caught $ex ")
-                  complete(s"Cannot Start, Already in call for id $id")
-              }
+        path("start-call"){
+          parameters("id"){ id =>
+            try{
+              val mediatorActor = system.actorOf(MediatorActor.props(dbActorPool),s"mediator-$id")
+              log.info(s"Created mediator actor for id #$id# and Initiating meter for Caller")
+              mediatorActor ! InitiateMeter(Integer.valueOf(id))
+              complete(s" Starting call for id $id")
+            }catch {
+              case ex: akka.actor.InvalidActorNameException =>
+                log.info(s"Already in call for id #$id# , Exception caught $ex ")
+                complete(s"Cannot Start, Already in call for id $id")
             }
           } ~
           path("stop-call") {
