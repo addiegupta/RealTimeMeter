@@ -34,10 +34,16 @@ object WebServer {
       get{
         path("start-call"){
           parameters("id"){ id =>
-            val mediatorActor = system.actorOf(MediatorActor.props(dbActorPool),s"mediator-$id")
-            log.info(s"Created mediator actor for id $id and now initiating meter")
-            mediatorActor ! InitiateMeter(Integer.valueOf(id))
-            complete(s" Starting call for id $id")
+            try{
+              val mediatorActor = system.actorOf(MediatorActor.props(dbActorPool),s"mediator-$id")
+              log.info(s"Created mediator actor for id #$id# and now initiating meter")
+              mediatorActor ! InitiateMeter(Integer.valueOf(id))
+              complete(s" Starting call for id $id")
+            }catch {
+              case ex: akka.actor.InvalidActorNameException =>
+                log.info(s"Already in call for id #$id# , Exception caught $ex ")
+                complete(s"Cannot Start, Already in call for id $id")
+            }
           }
         } ~
         path("stop-call" ){
@@ -46,11 +52,11 @@ object WebServer {
             implicit val timeout = Timeout(FiniteDuration(1, TimeUnit.SECONDS))
             onComplete(system.actorSelection("user/" + s"mediator-$id").resolveOne()) {
               case Success(actorRef) => // logic with the actorRef
-                log.info(s"Stopping call for id: $id")
+                log.info(s"Stopping call for id: #$id#")
                 actorRef ! EndCallMediator
                 complete(s"Call stopped for id: $id in ${(System.currentTimeMillis() - start) / 1000} seconds")
               case Failure(ex) =>
-                log.warning(s"mediatorActor $id does not exist $ex")
+                log.warning(s"mediatorActor #$id# does not exist $ex")
                 complete(s"Unable to stop call for id: $id \nError: $ex")
             }
           }
@@ -76,11 +82,11 @@ object WebServer {
               implicit val timeout = Timeout(FiniteDuration(1, TimeUnit.SECONDS))
               onComplete(system.actorSelection("user/" + s"mediator-$id").resolveOne()) {
                 case Success(actorRef) => // logic with the actorRef
-                  log.info(s"Crashing meter for id: $id")
+                  log.info(s"Crashing meter for id: #$id#")
                   actorRef ! "crash-meter"
-                  complete(s"Crashed Meter Actor for id: $id in ${(System.currentTimeMillis() - start) / 1000} seconds")
+                  complete(s"Crashed Meter Actor for id: #$id# in ${(System.currentTimeMillis() - start) / 1000} seconds")
                 case Failure(ex) =>
-                  log.warning(s"mediatorActor $id does not exist $ex")
+                  log.warning(s"mediatorActor #$id# does not exist $ex")
                   complete(s"Unable to crash for id: $id \nError: $ex")
               }
             }

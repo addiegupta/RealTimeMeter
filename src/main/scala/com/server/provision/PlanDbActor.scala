@@ -38,7 +38,7 @@ class PlanDbActor(implicit materializer: ActorMaterializer, system : ActorSystem
     override def receive: Receive = {
 
         case FindPlanById(id:Int)=>
-            log.info(s"FindPlanById called for id: $id and actor reference: ${self}")
+            log.info(s"FindPlanById called for id: #$id# and actor reference: ${self}")
 
             val action = plans.filter(_.id===id).map(u => (u.data_balance)).result.map(_.headOption.map{
                 case data_balance => data_balance
@@ -55,7 +55,7 @@ class PlanDbActor(implicit materializer: ActorMaterializer, system : ActorSystem
         //        }
 
         case UpdateBalanceById(id:Int,balance:Int)=>
-            log.info(s"UpdateBalanceById called for id: $id and balance: $balance and actor reference: ${self}")
+            log.info(s"UpdateBalanceById called for id: #$id# and balance: $balance and actor reference: ${self}")
             val query = for { p <- plans if p.id === id } yield p.data_balance
             val updateAction = query.update(balance)
 

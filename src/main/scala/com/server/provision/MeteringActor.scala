@@ -21,12 +21,15 @@ class MeteringActor(id: Int, var balance:Int) (implicit materializer: ActorMater
   var cancellable:Cancellable = null
   implicit val ec = system.dispatcher
   override def preStart(): Unit = {
-    log.info(s"Started Balance meter for id:$id with balance: $balance")
+    log.info(s"Started Balance meter for id:#$id# with balance: $balance")
 
     cancellable = context.system.scheduler.schedule(0 seconds, 1 seconds) {
 
       balance-=1
-      log.info(s"ID: $id ; Balance: $balance")
+      log.info(s"ID: #$id# ; Balance: $balance")
+      if(balance==100){
+        log.warning(s"Low Balance ,Call will disconnect in 100 seconds")
+      }
       if(balance==0){
         cancellable.cancel()
         context.parent!UpdateBalance(id,balance)
@@ -42,7 +45,7 @@ class MeteringActor(id: Int, var balance:Int) (implicit materializer: ActorMater
       println("Metering actor fails now")
       throw new Exception("I failed")
     case EndCallMeter=>
-      log.info(s"Call Ended for id: $id")
+      log.info(s"Call Ended for id: #$id#")
       cancellable.cancel()
       sender()!UpdateBalance(id,balance)
       context stop self
@@ -52,7 +55,7 @@ class MeteringActor(id: Int, var balance:Int) (implicit materializer: ActorMater
 
   }
   override def postStop(): Unit = {
-    log.info(s"Stopped Balance meter for id: $id")
+    log.info(s"Stopped Balance meter for id: #$id#")
     cancellable.cancel()
   }
 }

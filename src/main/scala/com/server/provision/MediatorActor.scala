@@ -72,31 +72,31 @@ with ActorLogging{
                   val balance:Int=show(x)
                   if(balance==0)
                   {
-                      log.info(s"Balance 0 for id:$id , Call Cannot be established")
+                      log.info(s"Balance 0 for id:#$id# , Call Cannot be established")
                       context stop self
                   }
                   else
                       meterActor = context.actorOf(MeteringActor.props(id,balance), name = s"balanceMeterActor-$id")
               //          balanceMeterActor ! DecreaseBalance
 
-              case None =>log.info(s"Record Not Found for $id")//Success with None
+              case None =>log.info(s"Record Not Found for #$id#")//Success with None
                   context stop self
           }
 
     case InitiateMeter(id)=>
-      log.info(s"Initiating meter for id: $id inside mediator")
+      log.info(s"Initiating meter for id: #$id# inside mediator")
       this.id = id
       planDbActor ! FindPlanById(id)
 
     case EndCallMediator=>
-        log.info("Mediator to BalanceMeterActor")
+        log.info(s"Ending call Mediator to BalanceMeterActor for id: #$id#")
         meterActor ! EndCallMeter
     case UpdateBalance(id,balance)=>
       //      balanceMeterActor!PoisonPill
       planDbActor ! UpdateBalanceById(id,balance)
       context stop self
     case ReplyToMeter(f,id)=>
-      log.info(s"ReplyToMeter called for id: $id ")
+      log.info(s"ReplyToMeter called for id: #$id# ")
 
 //      f.map {
 //        case x:Some[Int] =>
@@ -121,12 +121,12 @@ with ActorLogging{
           val balance:Int=show(v)
           if(balance==0)
           {
-            log.info(s"Balance 0 for id:$id , Call Cannot be established")
+            log.info(s"Balance 0 for id: #$id# , Call Cannot be established")
             context stop self
           }
           else if(balance<0)
           {
-            log.info(s"Record Not Found for $id")//Success with None
+            log.info(s"Record Not Found for #$id#")//Success with None
             context stop self
           }
           else {
