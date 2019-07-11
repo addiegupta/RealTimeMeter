@@ -23,7 +23,7 @@ object WebServer {
   protected val log = Logging(system.eventStream, "RealTimeMeter-log")
   protected implicit val materializer: ActorMaterializer = ActorMaterializer()
 
-  log.info("Starting planDbActor")
+  log.info("Starting Plan Database Router Pooler")
 //  val planDbActor: ActorRef = system.actorOf(PlanDbActor.props, "planDataActor")
   val dbActorPool=system.actorOf(FromConfig.props(PlanDbActor.props),"random-router-pool-resizer")
 
@@ -39,7 +39,7 @@ object WebServer {
           parameters("id"){ id =>
             try{
               val mediatorActor = system.actorOf(MediatorActor.props(dbActorPool),s"mediator-$id")
-              log.info(s"Created mediator actor for id #$id# and now initiating meter")
+              log.info(s"Created mediator actor for id #$id# and Initiating meter for Caller")
               mediatorActor ! InitiateMeter(Integer.valueOf(id))
               complete(s" Starting call for id $id")
             }catch {

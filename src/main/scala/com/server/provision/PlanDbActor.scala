@@ -35,7 +35,7 @@ class PlanDbActor(implicit system : ActorSystem) extends Actor
     override def receive: Receive = {
 
         case FindPlanById(id:Int)=>
-            log.info(s"FindPlanById called for id: #$id# and actor reference: ${self}")
+            log.info(s"Finding Plan Details for id: #$id# with DB actor reference: ${self}")
 
             val action = plans.filter(_.id===id).map(u => (u.data_balance)).result.map(_.headOption.map{
                 case data_balance => data_balance
@@ -43,21 +43,13 @@ class PlanDbActor(implicit system : ActorSystem) extends Actor
 
             val queryResult = db.run(action)
 
-            sender()! ReplyToMeter(queryResult,id)
-
-        //        f.onComplete {
-        //          case s => println(s"Result: $s")
-        //                  sender()! ReplyToMeter
-        ////                    medActor! ReplyToMeter
-        //        }
+            sender()! ReceivePlanDetails(queryResult,id)
 
         case UpdateBalanceById(id:Int,balance:Int)=>
-            log.info(s"UpdateBalanceById called for id: #$id# and balance: $balance and actor reference: ${self}")
+            log.info(s"Updating new balance:$balance for id: #$id# with DB actor reference: ${self}")
             val query = for { p <- plans if p.id === id } yield p.data_balance
             val updateAction = query.update(balance)
 
-            // Get the statement without having to specify an updated value:
-            //    val sql = query.updateStatement
 
             db.run(updateAction)
     }

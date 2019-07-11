@@ -16,7 +16,7 @@ object MediatorActor{
   case object EndCallMediator
   case class InitiateMeter(id:Int)
   case class UpdateBalance(id:Int,balance:Int)
-  case class ReplyToMeter(f:Future[Option[Int]],id:Int)
+  case class ReceivePlanDetails(f:Future[Option[Int]],id:Int)
 
 }
 class MediatorActor(planDbActor: ActorRef)(implicit system: ActorSystem) extends Actor
@@ -33,13 +33,13 @@ with ActorLogging{
 
   override val supervisorStrategy =
     OneForOneStrategy() {
-      case _: ArithmeticException      => log.info("Resuming Meter Actor")
+      case _: ArithmeticException      => log.info(s"Resuming Meter Actor for id: #$id#")
                                           Resume
-      case _: NullPointerException     => log.info("Restarting Meter Actor")
+      case _: NullPointerException     => log.info(s"Restarting Meter Actor for id: #$id#")
                                           Restart
-      case _: IllegalArgumentException => log.info("Stopping Meter Actor")
+      case _: IllegalArgumentException => log.info(s"Stopping Meter Actor for id: #$id#")
                                           Stop
-      case _: Exception                =>log.info("Resuming Meter Actor")
+      case _: Exception                =>log.info(s"Resuming Meter Actor for id: #$id#")
                                           Resume
 
     }
@@ -58,7 +58,7 @@ with ActorLogging{
   }
   override def receive: Receive = {
 
-      case e: Status.Failure =>
+      /*case e: Status.Failure =>
           log.info(s" Received status failure in mediator ${e.toString}")
       case e:AskTimeoutException =>
           log.info(s" Received timeout exception in mediator ${e.toString}")
@@ -81,7 +81,7 @@ with ActorLogging{
 
               case None =>log.info(s"Record Not Found for #$id#")//Success with None
                   context stop self
-          }
+          }*/
 
     case InitiateMeter(id)=>
       log.info(s"Initiating meter for id: #$id# inside mediator")
@@ -89,14 +89,14 @@ with ActorLogging{
       planDbActor ! FindPlanById(id)
 
     case EndCallMediator=>
-        log.info(s"Ending call Mediator to BalanceMeterActor for id: #$id#")
+        log.info(s"Ending call - Mediator to BalanceMeterActor for id: #$id#")
         meterActor ! EndCallMeter
     case UpdateBalance(id,balance)=>
       //      balanceMeterActor!PoisonPill
       planDbActor ! UpdateBalanceById(id,balance)
       context stop self
-    case ReplyToMeter(f,id)=>
-      log.info(s"ReplyToMeter called for id: #$id# ")
+    case ReceivePlanDetails(f,id)=>
+      log.info(s"Waiting for Plan Details for id: #$id#")
 
 //      f.map {
 //        case x:Some[Int] =>
@@ -130,6 +130,8 @@ with ActorLogging{
             context stop self
           }
           else {
+            log.info(s"Found Valid Plan Details for id: #$id# , Call can be established. Hence, Creating Metering Actor.")
+
             meterActor = context.actorOf(MeteringActor.props(id, balance), name = s"balanceMeterActor-$id")
             // Greeting sent so that visualmailbox can display the meter actor
             meterActor ! Greetings
