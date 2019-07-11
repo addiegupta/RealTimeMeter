@@ -2,22 +2,19 @@
 package com.server.provision
 
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
-import akka.stream.ActorMaterializer
 import com.server.provision.MediatorActor._
 import slick.jdbc.PostgresProfile.api._
-import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, Future}
 
 object PlanDbActor{
-    def props(implicit materializer: ActorMaterializer, system : ActorSystem) =
-        Props(classOf[PlanDbActor],materializer,system)
+    def props(implicit system : ActorSystem) =
+        Props(classOf[PlanDbActor],system)
 
     case class FindPlanById(id:Int)
 
     case class UpdateBalanceById(id:Int,data_balance:Int)
 
 }
-class PlanDbActor(implicit materializer: ActorMaterializer, system : ActorSystem) extends Actor
+class PlanDbActor(implicit system : ActorSystem) extends Actor
     with ActorLogging {
 
     val db = Database.forConfig("plansDb")

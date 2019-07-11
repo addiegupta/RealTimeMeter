@@ -32,6 +32,9 @@ object WebServer {
 
     val provisioningRoute =
       get{
+        pathSingleSlash{
+          complete("RealTime Metering System is up and running!")
+        } ~
         path("start-call"){
           parameters("id"){ id =>
             try{
@@ -46,21 +49,6 @@ object WebServer {
             }
           }
         } ~
-        path("stop-call" ){
-          parameters("id") { id =>
-            val start = System.currentTimeMillis()
-            implicit val timeout = Timeout(FiniteDuration(1, TimeUnit.SECONDS))
-            onComplete(system.actorSelection("user/" + s"mediator-$id").resolveOne()) {
-              case Success(actorRef) => // logic with the actorRef
-                log.info(s"Stopping call for id: #$id#")
-                actorRef ! EndCallMediator
-                complete(s"Call stopped for id: $id in ${(System.currentTimeMillis() - start) / 1000} seconds")
-              case Failure(ex) =>
-                log.warning(s"mediatorActor #$id# does not exist $ex")
-                complete(s"Unable to stop call for id: $id \nError: $ex")
-            }
-          }
-        }~
           path("stop-call" ){
             parameters("id") { id =>
               val start = System.currentTimeMillis()
@@ -91,11 +79,9 @@ object WebServer {
               }
             }
           }
-
       }
-
     val httpInterface = "127.0.0.2"
-    val httpPort = 8080
+    val httpPort = 8181
 
     log.info(s"About to bind to: $httpInterface and: $httpPort")
     val bindingFuture: Future[ServerBinding] = Http().bindAndHandle(provisioningRoute, httpInterface, httpPort)
