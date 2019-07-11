@@ -2,21 +2,21 @@ package com.server.provision
 
 
 import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Cancellable, Props}
-import akka.stream.ActorMaterializer
 import com.server.provision.MediatorActor.UpdateBalance
-import com.server.provision.MeteringActor.EndCallMeter
+import com.server.provision.MeteringActor.{EndCallMeter, Greetings}
 
 import scala.concurrent.duration._
 
 object MeteringActor
 {
-  def props(id: Int,balance:Int)(implicit materializer: ActorMaterializer, system: ActorSystem)  =
-    Props(classOf[MeteringActor],id,balance,materializer,system)
+  def props(id: Int,balance:Int)(implicit system: ActorSystem)  =
+    Props(classOf[MeteringActor],id,balance,system)
   case object EndCallMeter
+  case object Greetings
 
 }
 
-class MeteringActor(id: Int, var balance:Int) (implicit materializer: ActorMaterializer, system: ActorSystem) extends Actor
+class MeteringActor(id: Int, var balance:Int) (implicit system: ActorSystem) extends Actor
   with ActorLogging{
   var cancellable:Cancellable = null
   implicit val ec = system.dispatcher
@@ -49,7 +49,8 @@ class MeteringActor(id: Int, var balance:Int) (implicit materializer: ActorMater
     //      val planDataActor: ActorRef = context.actorOf(PlanDataActor.props, "planDataActor")
     //
     //      planDataActor ! UpdateBalanceById(id,balance-10)
-
+    case Greetings =>
+      log.info("Received greetings from mediator in meter")
   }
   override def postStop(): Unit = {
     log.info(s"Stopped Balance meter for id: $id")

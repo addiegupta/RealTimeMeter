@@ -2,17 +2,16 @@
 package com.server.provision
 
 import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props, Status}
-import akka.stream.ActorMaterializer
 import com.server.provision.PlanDbActor.{FindPlanById, UpdateBalanceById}
-import com.server.provision.MeteringActor.EndCallMeter
+import com.server.provision.MeteringActor.{EndCallMeter, Greetings}
 import akka.pattern.AskTimeoutException
 
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
 object MediatorActor{
-  def props(planDbActor: ActorRef)(implicit materializer: ActorMaterializer,system : ActorSystem) =
-    Props(classOf[MediatorActor],planDbActor,materializer,system)
+  def props(planDbActor: ActorRef)(implicit system : ActorSystem) =
+    Props(classOf[MediatorActor],planDbActor,system)
 
   case object EndCallMediator
   case class InitiateMeter(id:Int)
@@ -20,7 +19,7 @@ object MediatorActor{
   case class ReplyToMeter(f:Future[Option[Int]],id:Int)
 
 }
-class MediatorActor(planDbActor: ActorRef)(implicit materializer: ActorMaterializer, system: ActorSystem) extends Actor
+class MediatorActor(planDbActor: ActorRef)(implicit system: ActorSystem) extends Actor
 with ActorLogging{
   import MediatorActor._
 
@@ -77,6 +76,7 @@ with ActorLogging{
                   }
                   else
                       meterActor = context.actorOf(MeteringActor.props(id,balance), name = s"balanceMeterActor-$id")
+                      meterActor ! Greetings
               //          balanceMeterActor ! DecreaseBalance
 
               case None =>log.info(s"Record Not Found for $id")//Success with None
@@ -131,6 +131,8 @@ with ActorLogging{
           }
           else {
             meterActor = context.actorOf(MeteringActor.props(id, balance), name = s"balanceMeterActor-$id")
+            // Greeting sent so that visualmailbox can display the meter actor
+            meterActor ! Greetings
           }
 
         case Failure(exception)=>println("f:"+exception)
