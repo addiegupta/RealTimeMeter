@@ -21,7 +21,6 @@ libraryDependencies ++= {
         "com.typesafe.slick"      %% "slick-codegen"                   % "3.3.0",
         "com.typesafe.slick"      %% "slick"                           % "3.3.0",
         "org.postgresql"          %  "postgresql"                      % "42.2.6",
-        "de.aktey.akka.visualmailbox" %% "collector"                   % "1.1.0",
         "io.spray" %% "spray-can" % "1.3.3",
         "io.spray" %% "spray-routing" % "1.3.3"
     )
