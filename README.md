@@ -1,4 +1,4 @@
-#Scalable Call Metering System
+# Scalable Call Metering System
 Scalable Call Metering System is a backend system that carries out the metering of user calls in real time.
  It is an Actor Model and REST API based application which can be used by telecom companies for managing and metering user calls in real time.
  The system is developed using Actor Model Programming with Akka, keeping in view the guidelines of reactive programming.
@@ -10,7 +10,7 @@ Being a message driven toolkit, Akka functions as a network of actors ( which ar
  
  Actors message flow:
 
-##Starting a call
+## Starting a call
 
 Whenever the provisioning server is up and running an Actor System and DB Pooler Actor are created and the server listens for requests.
 The DB Pooler is a router actor which helps in scaling and routing of requests to DB Actor. It creates and manages the scheduling of requests to DB Actors at run time. Random Router Pooler with resizable capabilities has been used which makes the system vertically scalable. The router configuration can be changed in application.conf file present in resources directory (other configurations are also provided in the configuration file for switching between routers) The name of the router can be changed in WebServer.scala file.
@@ -24,7 +24,7 @@ If so happens that the balance gets over before the stop call request from the u
 On receiving UpdateBalance message from metering actor, the Mediator actor will send UpdateBalance to DBPooler to update the balance and then will destroy itself.
 
 
-##Stopping a call
+## Stopping a call
 
 Whenever a stop call is to be initiated, a REST based web request (Stop Call (ID)) is sent to the provisioning server.
 Now the actor system searches for the mediator actor running corresponding to the ID of user(mediator-<id>).
@@ -36,23 +36,23 @@ On receiving UpdateBalance message from metering actor, the Mediator actor will 
 
 
 
-##Actor Crashing
+## Actor Crashing
 The metering actor is designed to exhibit self healing and fault tolerant characteristics.
 Whenever the metering actor is crashed, the supervisor (mediator) handles the exception and takes necessary actions accordingly.
 In the current implementation, the mediator actor resumes the metering actor from its previous state. All the other exceptions that can occur can be handled separately. 
 In this implementation, currently only metering actor exhibits self healing but all the actors of the system can be designed to do the same by using Supervisor Strategy mechanism.
 
 
-##System Requirements
+## System Requirements
 
-###HW Requirements
+### HW Requirements
 
 Hard Disk - 150 MB
 RAM - 2GB
 
 
 
-###SW Requirements
+### SW Requirements
 
 JDK v8
 Scala 2.12.6
@@ -66,7 +66,7 @@ Postgresql-11.3-4
 Intellij IDEA (Latest Stable Version)- optional
 
 
-##Running the project
+## Running the project
 First a Postgresql database is to be created with the following configuration.
 Note: Postgresql database is present at the git repo and can be directly imported. Or it can manually be created with the following configurations:
 
@@ -105,7 +105,7 @@ For visualising the actor flow, akka-visualmailbox library can be used which has
 
 
 
-##Testing the project
+## Testing the project
 
 There are three REST based web services for testing the project, any one of which can be used for testing the application.
 Apache Jmeter (for automation)
