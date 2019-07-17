@@ -1,9 +1,9 @@
-package com.server.provision
+package com.callmeter.system
 
 
 import akka.actor.{Actor, ActorLogging, ActorSystem, Cancellable, Props}
-import com.server.provision.MediatorActor.UpdateBalance
-import com.server.provision.MeteringActor.{DeliberateFailMeter, EndCallMeter, Greetings}
+import com.callmeter.system.MediatorActor.UpdateBalance
+import com.callmeter.system.MeteringActor.{DeliberateFailMeter, EndCallMeter, Greetings}
 
 import scala.concurrent.duration._
 

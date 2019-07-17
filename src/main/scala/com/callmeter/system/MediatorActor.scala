@@ -1,9 +1,9 @@
 
-package com.server.provision
+package com.callmeter.system
 
 import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
-import com.server.provision.DbActor.{FindPlanById, UpdateBalanceById}
-import com.server.provision.MeteringActor.{DeliberateFailMeter, EndCallMeter, Greetings}
+import com.callmeter.system.DbActor.{FindPlanById, UpdateBalanceById}
+import com.callmeter.system.MeteringActor.{DeliberateFailMeter, EndCallMeter, Greetings}
 
 import scala.concurrent.Future
 import scala.util.{Failure, Success}

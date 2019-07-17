@@ -1,8 +1,8 @@
 
-package com.server.provision
+package com.callmeter.system
 
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
-import com.server.provision.MediatorActor._
+import com.callmeter.system.MediatorActor._
 import slick.jdbc.PostgresProfile.api._
 
 /**
@@ -25,7 +25,7 @@ object DbActor{
 */
 class DbActor(implicit system : ActorSystem) extends Actor
     with ActorLogging {
-    import com.server.provision.DbActor._
+    import com.callmeter.system.DbActor._
 
     // Reference to database, accessed using Slick library
     val db = Database.forConfig("plansDb")
